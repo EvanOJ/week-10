@@ -54,7 +54,7 @@ map.on('draw:created', function (e) {
 
 
 // The viz.json output by publishing on cartodb
-var layerUrl = 'https://evanoj.cartodb.com/api/v2/viz/50e7fd44-ffa3-11e5-8260-0e3a376473ab/viz.json';
+var layerUrl = 'https://moradology.cartodb.com/api/v2/viz/b502a2bc-f9e9-11e5-90ae-0ecd1babdde5/viz.json';
 
 // Use of CartoDB.js
 cartodb.createLayer(map, layerUrl)
@@ -69,3 +69,4 @@ cartodb.createLayer(map, layerUrl)
   }).on('error', function(err) {
     // console.log(err):
   });
+

@@ -1,13 +1,13 @@
 
-/** Find the N closest aviation incidents */
+/** Find the N closest world bank projects */
 function nClosest(point, n) {
   // The SQL in english:
   // SELECT (all data) FROM (the table, world_bank_projects)
   // ORDER BY (distance of these geoms from the provided point)
   // LIMIT (to n cases)
-  var sql = 'SELECT * FROM aviationdata ORDER BY the_geom <-> ST_Point(' + point.lng + ',' + point.lat + ') LIMIT ' + n;
+  var sql = 'SELECT * FROM world_bank_projects ORDER BY the_geom <-> ST_Point(' + point.lng + ',' + point.lat + ') LIMIT ' + n;
 
-  $.ajax('https://evanoj.cartodb.com/api/v2/sql/?q=' + sql).done(function(results) {
+  $.ajax('https://moradology.cartodb.com/api/v2/sql/?q=' + sql).done(function(results) {
     //console.log(n +' closest:', results);
     addRecords(results);
   });
@@ -19,10 +19,10 @@ function pointsWithin(rect) {
   var sw = rect[0];
   var ne = rect[2];
 
-  var sql = 'SELECT * FROM aviationdata WHERE the_geom @ ST_MakeEnvelope(' +
+  var sql = 'SELECT * FROM world_bank_projects WHERE the_geom @ ST_MakeEnvelope(' +
     sw.lng + ','+ sw.lat + ',' + ne.lng + ',' + ne.lat + ', 4326)';
 
-  $.ajax('https://evanoj.cartodb.com/api/v2/sql/?q=' + sql).done(function(results) {
+  $.ajax('https://moradology.cartodb.com/api/v2/sql/?q=' + sql).done(function(results) {
     //console.log('pointsWithin:', results);
     addRecords(results);
   });
@@ -38,20 +38,20 @@ function pointsWithin(rect) {
  */
 function addOneRecord(rec) {
   var title = $('<p></p>')
-    .text('Accident Number: ' + rec.accident_number);
+    .text('Title: ' + rec.project_title);
 
   var location = $('<p></p>')
-    .text('Location: ' + rec.location + ', ' + rec.country);
+    .text('Location: ' + rec.geoname + ', ' + rec.country);
 
-  var severity = $('<p></p>')
-    .text('Fatal Injuries: ' + rec.total_fatal_injuries);
+  var lending_instrument = $('<p></p>')
+    .text('Instrument: ' + rec.lending_instrument);
 
 
   var recordElement = $('<li></li>')
     .addClass('list-group-item')
     .append(title)
     .append(location)
-    .append(severity);
+    .append(lending_instrument);
 
   $('#project-list').append(recordElement);
 }
@@ -61,3 +61,4 @@ function addRecords(cartodbResults) {
   $('#project-list').empty();
   _.each(cartodbResults.rows, addOneRecord);
 }
+
